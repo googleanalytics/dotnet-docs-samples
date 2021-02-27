@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Analytics.Data.V1Alpha" Version="1.0.0-alpha01" />
+    <PackageReference Include="Google.Analytics.Data.V1Beta" Version="1.0.0-beta01" />
   </ItemGroup>
 
 </Project>
