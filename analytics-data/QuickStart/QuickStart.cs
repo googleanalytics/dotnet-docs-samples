@@ -14,85 +14,93 @@
 
 /* Google Analytics Data API sample quickstart application.
 
-Example usage:
-    dotnet restore
-    dotnet run <GA4 property ID>
+Before you start the application, please review the comments starting with
+"TODO(developer)" and update the code to use correct values.
 
-This application demonstrates the usage of the Analytics Data API using
-service account credentials. For more information on service accounts, see
+This application demonstrates the usage of the Analytics Data API using service
+account credentials.
 
-https://cloud.google.com/iam/docs/understanding-service-accounts
+Usage:
+  cd analytics-data/QuickStart
+  dotnet restore
+  dotnet run
+ */
 
-The following document provides instructions on setting service account
-credentials for your application:
-
-  https://cloud.google.com/docs/authentication/production
-
-In a nutshell, you need to:
-1. Create a service account and download the key JSON file.
-
-https://cloud.google.com/docs/authentication/production#creating_a_service_account
-
-2. Provide service account credentials using one of the following options:
-- set the GOOGLE_APPLICATION_CREDENTIALS environment variable, the API
-client will use the value of this variable to find the service account key
-JSON file.
-
-https://cloud.google.com/docs/authentication/production#setting_the_environment_variable
-
-OR
-- manually pass the path to the service account key JSON file to the API client
-by specifying the keyFilename parameter in the constructor:
-https://cloud.google.com/docs/authentication/production#passing_the_path_to_the_service_account_key_in_code
-
-*/
-
-// [START analyticsdata_quickstart]
-
-using Google.Analytics.Data.V1Alpha;
+// [START google_analytics_data_quickstart]
+using Google.Analytics.Data.V1Beta;
+using Google.Api.Gax;
 using System;
 
 namespace AnalyticsSamples
 {
     class QuickStart
     {
-        static void SampleRunReport(string propertyId)
+        static void SampleRunReport(string propertyId="YOUR-GA4-PROPERTY-ID", string credentialsJsonPath="")
         {
-            // Using a default constructor instructs the client to use the credentials
-            // specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
-            AlphaAnalyticsDataClient client = AlphaAnalyticsDataClient.Create();
+            /**
+             * TODO(developer): Uncomment this variable and replace with your
+             *  Google Analytics 4 property ID before running the sample.
+             */
+            // propertyId = "YOUR-GA4-PROPERTY-ID";
 
+            // [START google_analytics_data_initialize]
+            /**
+             * TODO(developer): Uncomment this variable and replace with a valid path to
+             *  the credentials.json file for your service account downloaded from the
+             *  Cloud Console.
+             *  Otherwise, default service account credentials will be derived from
+             *  the GOOGLE_APPLICATION_CREDENTIALS environment variable.
+             */
+            // credentialsJsonPath = "/path/to/credentials.json";
+
+            BetaAnalyticsDataClient client;
+            if(String.IsNullOrEmpty(credentialsJsonPath))
+            {
+              // Using a default constructor instructs the client to use the credentials
+              // specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
+              client = BetaAnalyticsDataClient.Create();
+            }
+            else
+            {
+              // Explicitly use service account credentials by specifying
+              // the private key file.
+              client = new BetaAnalyticsDataClientBuilder
+              {
+                CredentialsPath = credentialsJsonPath
+              }.Build();
+            }
+            // [END google_analytics_data_initialize]
+
+            // [START google_analytics_data_run_report]
             // Initialize request argument(s)
             RunReportRequest request = new RunReportRequest
             {
-                Entity = new Entity{ PropertyId = propertyId },
+                Property = "property/" + propertyId,
                 Dimensions = { new Dimension{ Name="city"}, },
                 Metrics = { new Metric{ Name="activeUsers"}, },
                 DateRanges = { new DateRange{ StartDate="2020-03-31", EndDate="today"}, },
             };
 
             // Make the request
-            RunReportResponse response = client.RunReport(request);
+            PagedEnumerable<RunReportResponse, DimensionHeader> response = client.RunReport(request);
+            // [END google_analytics_data_run_report]
 
+            // [START google_analytics_data_print_report]
             Console.WriteLine("Report result:");
-            foreach( Row row in response.Rows )
+            foreach(RunReportResponse page in response.AsRawResponses())
             {
-                Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
+              foreach(Row row in page.Rows)
+              {
+                  Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
+              }
             }
+            // [END google_analytics_data_print_report]
         }
-
         static int Main(string[] args)
         {
-            if (args.Length == 0 || args.Length > 2)
-            {
-                Console.WriteLine("Arguments: <GA4 property ID>");
-                Console.WriteLine("A GA4 property id parameter is required to make a query to the Google Analytics Data API.");
-                return 1;
-            }
-            string propertyId = args[0];
-            SampleRunReport(propertyId);
+            SampleRunReport();
             return 0;
         }
     }
 }
-// [END analyticsdata_quickstart]
+// [END google_analytics_data_quickstart]
