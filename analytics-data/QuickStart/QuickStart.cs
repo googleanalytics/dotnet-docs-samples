@@ -42,11 +42,11 @@ namespace AnalyticsSamples
              */
             // propertyId = "YOUR-GA4-PROPERTY-ID";
 
-            // [START analyticsdata_run_report_initialize]
+            // [START analyticsdata_initialize]
             // Using a default constructor instructs the client to use the credentials
             // specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
             BetaAnalyticsDataClient client = BetaAnalyticsDataClient.Create();
-            // [END analyticsdata_run_report_initialize]
+            // [END analyticsdata_initialize]
 
             // [START analyticsdata_run_report]
             // Initialize request argument(s)
