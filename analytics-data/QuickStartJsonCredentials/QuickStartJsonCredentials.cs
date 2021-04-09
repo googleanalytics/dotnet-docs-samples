@@ -21,20 +21,20 @@ This application demonstrates the usage of the Analytics Data API using service
 account credentials.
 
 Usage:
-  cd analytics-data/QuickStart
+  cd analytics-data/QuickStartJsonCredentials
   dotnet restore
   dotnet run
  */
 
-// [START analyticsdata_quickstart]
+// [START analyticsdata_json_credentials_quickstart]
 using Google.Analytics.Data.V1Beta;
 using System;
 
 namespace AnalyticsSamples
 {
-    class QuickStart
+    class QuickStartJsonCredentials
     {
-        static void SampleRunReport(string propertyId="YOUR-GA4-PROPERTY-ID")
+        static void SampleRunReport(string propertyId="YOUR-GA4-PROPERTY-ID", string credentialsJsonPath="")
         {
             /**
              * TODO(developer): Uncomment this variable and replace with your
@@ -42,13 +42,25 @@ namespace AnalyticsSamples
              */
             // propertyId = "YOUR-GA4-PROPERTY-ID";
 
-            // [START analyticsdata_initialize]
-            // Using a default constructor instructs the client to use the credentials
-            // specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
-            BetaAnalyticsDataClient client = BetaAnalyticsDataClient.Create();
-            // [END analyticsdata_initialize]
+            // [START analyticsdata_json_credentials_initialize]
+            /**
+             * TODO(developer): Uncomment this variable and replace with a valid path to
+             *  the credentials.json file for your service account downloaded from the
+             *  Cloud Console.
+             *  Otherwise, default service account credentials will be derived from
+             *  the GOOGLE_APPLICATION_CREDENTIALS environment variable.
+             */
+            // credentialsJsonPath = "/path/to/credentials.json";
 
-            // [START analyticsdata_run_report]
+            // Explicitly use service account credentials by specifying
+            // the private key file.
+            BetaAnalyticsDataClient client = new BetaAnalyticsDataClientBuilder
+            {
+              CredentialsPath = credentialsJsonPath
+            }.Build();
+            // [END analyticsdata_json_credentials_initialize]
+
+            // [START analyticsdata_json_credentials_run_report]
             // Initialize request argument(s)
             RunReportRequest request = new RunReportRequest
             {
@@ -60,9 +72,9 @@ namespace AnalyticsSamples
 
             // Make the request
             PagedEnumerable<RunReportResponse, DimensionHeader> response = client.RunReport(request);
-            // [END analyticsdata_run_report]
+            // [END analyticsdata_json_credentials_run_report]
 
-            // [START analyticsdata_run_report_response]
+            // [START analyticsdata_json_credentials_run_report_response]
             Console.WriteLine("Report result:");
             foreach(RunReportResponse page in response.AsRawResponses())
             {
@@ -71,7 +83,7 @@ namespace AnalyticsSamples
                   Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
               }
             }
-            // [END analyticsdata_run_report_response]
+            // [END analyticsdata_json_credentials_run_report_response]
         }
         static int Main(string[] args)
         {
@@ -80,4 +92,4 @@ namespace AnalyticsSamples
         }
     }
 }
-// [END analyticsdata_quickstart]
+// [END analyticsdata_json_credentials_quickstart]
