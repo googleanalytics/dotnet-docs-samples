@@ -52,24 +52,21 @@ namespace AnalyticsSamples
             // Initialize request argument(s)
             RunReportRequest request = new RunReportRequest
             {
-                Property = "property/" + propertyId,
+                Property = "properties/" + propertyId,
                 Dimensions = { new Dimension{ Name="city"}, },
                 Metrics = { new Metric{ Name="activeUsers"}, },
                 DateRanges = { new DateRange{ StartDate="2020-03-31", EndDate="today"}, },
             };
 
             // Make the request
-            PagedEnumerable<RunReportResponse, DimensionHeader> response = client.RunReport(request);
+            var response = client.RunReport(request);
             // [END analyticsdata_run_report]
 
             // [START analyticsdata_run_report_response]
             Console.WriteLine("Report result:");
-            foreach(RunReportResponse page in response.AsRawResponses())
+            foreach(Row row in response.Rows)
             {
-              foreach(Row row in page.Rows)
-              {
-                  Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
-              }
+                Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
             }
             // [END analyticsdata_run_report_response]
         }
