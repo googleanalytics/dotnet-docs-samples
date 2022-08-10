@@ -50,7 +50,7 @@ namespace AnalyticsSamples
              *  Otherwise, default service account credentials will be derived from
              *  the GOOGLE_APPLICATION_CREDENTIALS environment variable.
              */
-            // credentialsJsonPath = "/path/to/credentials.json";
+            // credentialsJsonPath = "/path/to/credentials.json"
 
             // Explicitly use service account credentials by specifying
             // the private key file.
@@ -66,22 +66,19 @@ namespace AnalyticsSamples
             {
                 Property = "property/" + propertyId,
                 Dimensions = { new Dimension{ Name="city"}, },
-                Metrics = { new Metric{ Name="activeUsers"}, },
-                DateRanges = { new DateRange{ StartDate="2020-03-31", EndDate="today"}, },
+                Metrics = { new Metric { Name = "activeUsers" }, },
+                DateRanges = { new DateRange{ StartDate="2020-03-31", EndDate="today"}},
             };
 
             // Make the request
-            PagedEnumerable<RunReportResponse, DimensionHeader> response = client.RunReport(request);
+            var response = client.RunReport(request);
             // [END analyticsdata_json_credentials_run_report]
 
             // [START analyticsdata_json_credentials_run_report_response]
             Console.WriteLine("Report result:");
-            foreach(RunReportResponse page in response.AsRawResponses())
+            foreach (Row row in response.Rows)
             {
-              foreach(Row row in page.Rows)
-              {
-                  Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
-              }
+                Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
             }
             // [END analyticsdata_json_credentials_run_report_response]
         }
@@ -90,6 +87,8 @@ namespace AnalyticsSamples
             SampleRunReport();
             return 0;
         }
+
+       
     }
 }
 // [END analyticsdata_json_credentials_quickstart]
