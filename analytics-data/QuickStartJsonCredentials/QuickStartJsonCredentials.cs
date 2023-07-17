@@ -64,7 +64,7 @@ namespace AnalyticsSamples
             // Initialize request argument(s)
             RunReportRequest request = new RunReportRequest
             {
-                Property = "property/" + propertyId,
+                Property = "properties/" + propertyId,
                 Dimensions = { new Dimension{ Name="city"}, },
                 Metrics = { new Metric{ Name="activeUsers"}, },
                 DateRanges = { new DateRange{ StartDate="2020-03-31", EndDate="today"}, },
