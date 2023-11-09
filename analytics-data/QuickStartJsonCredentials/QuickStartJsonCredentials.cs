@@ -28,13 +28,15 @@ Usage:
 
 // [START analyticsdata_json_credentials_quickstart]
 using Google.Analytics.Data.V1Beta;
+using Google.Api.Gax;
 using System;
 
 namespace AnalyticsSamples
 {
     class QuickStartJsonCredentials
     {
-        static void SampleRunReport(string propertyId="YOUR-GA4-PROPERTY-ID", string credentialsJsonPath="")
+        static void SampleRunReport(string propertyId="YOUR-GA4-PROPERTY-ID",
+            string credentialsJsonPath="YOUR-CREDENTIALS-FILE")
         {
             /**
              * TODO(developer): Uncomment this variable and replace with your
@@ -64,24 +66,23 @@ namespace AnalyticsSamples
             // Initialize request argument(s)
             RunReportRequest request = new RunReportRequest
             {
-                Property = "property/" + propertyId,
+                Property = "properties/" + propertyId,
                 Dimensions = { new Dimension{ Name="city"}, },
                 Metrics = { new Metric{ Name="activeUsers"}, },
                 DateRanges = { new DateRange{ StartDate="2020-03-31", EndDate="today"}, },
             };
 
             // Make the request
-            PagedEnumerable<RunReportResponse, DimensionHeader> response = client.RunReport(request);
+            RunReportResponse response = client.RunReport(request);
             // [END analyticsdata_json_credentials_run_report]
 
             // [START analyticsdata_json_credentials_run_report_response]
+            // For more information on processing paged responses, see:
+            // https://cloud.google.com/dotnet/docs/reference/help/page-streaming
             Console.WriteLine("Report result:");
-            foreach(RunReportResponse page in response.AsRawResponses())
+            foreach(Row row in response.Rows)
             {
-              foreach(Row row in page.Rows)
-              {
-                  Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
-              }
+                Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
             }
             // [END analyticsdata_json_credentials_run_report_response]
         }

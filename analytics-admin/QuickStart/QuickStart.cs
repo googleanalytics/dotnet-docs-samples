@@ -49,7 +49,7 @@ https://cloud.google.com/docs/authentication/production#passing_the_path_to_the_
 
 // [START analyticsadmin_quickstart]
 
-using Google.Analytics.Admin.V1Alpha;
+using Google.Analytics.Admin.V1Beta;
 using System;
 
 namespace AnalyticsSamples
@@ -64,7 +64,7 @@ namespace AnalyticsSamples
             {
                 Console.WriteLine("Account name: {0}", account.Name);
                 Console.WriteLine("Display name: {0}", account.DisplayName);
-                Console.WriteLine("Country code: {0}", account.CountryCode);
+                Console.WriteLine("Region code: {0}", account.RegionCode);
                 Console.WriteLine("Update time: {0}", account.UpdateTime);
                 Console.WriteLine("Create time: {0}", account.CreateTime);
                 Console.WriteLine();
