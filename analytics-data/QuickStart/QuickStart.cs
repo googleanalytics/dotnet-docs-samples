@@ -59,7 +59,7 @@ namespace AnalyticsSamples
             };
 
             // Make the request
-            var response = client.RunReport(request);
+            RunReportResponse response = client.RunReport(request);
             // [END analyticsdata_run_report]
 
             // [START analyticsdata_run_report_response]
