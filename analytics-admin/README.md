@@ -3,7 +3,7 @@
 [![Open in Cloud Shell][shell_img]][shell_link]
 
 [shell_img]: http://gstatic.com/cloudssh/images/open-btn.png
-[shell_link]: https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleanalytics/dotnet-docs-samples&page=editor&open_in_editor=/google-analytics-admin/README.md
+[shell_link]: https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleanalytics/dotnet-docs-samples&page=editor&open_in_editor=/analytics-admin/README.md
 
 These samples show how to use the
 [Google Analytics Admin API](https://developers.google.com/analytics/devguides/config/admin/v1) from .NET.
@@ -22,7 +22,7 @@ These samples show how to use the
 3.  **Clone the repo** and cd into this directory.
     ```sh
     git clone https://github.com/googleanalytics/dotnet-docs-samples
-    cd dotnet-docs-samples/google-analytics-data
+    cd dotnet-docs-samples/analytics-data
     ```
 4.  Confirm that [dotnet](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-build) is installed.
     ```sh
