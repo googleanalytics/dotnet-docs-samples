@@ -4,8 +4,8 @@
 
 Check out the `README.md` in one of the following directories to get started:
 
-- Admin API: [README.md](google-analytics-admin/README.md)
-- Data API: [README.md](google-analytics-data/README.md)
+- Admin API: [README.md](analytics-admin/README.md)
+- Data API: [README.md](analytics-data/README.md)
 
 ## Contributing
 
