@@ -59,7 +59,7 @@ namespace AnalyticsSamples
             };
 
             // Make the request
-            var response = client.RunReport(request);
+            RunReportResponse response = client.RunReport(request);
             // [END analyticsdata_run_report]
 
             // [START analyticsdata_run_report_response]
@@ -72,7 +72,11 @@ namespace AnalyticsSamples
         }
         static int Main(string[] args)
         {
-            SampleRunReport();
+            if (args.Length > 0) {
+                SampleRunReport(args[0]);
+            } else {
+                SampleRunReport();
+            }
             return 0;
         }
     }
