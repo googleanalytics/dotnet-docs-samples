@@ -88,7 +88,11 @@ namespace AnalyticsSamples
         }
         static int Main(string[] args)
         {
-            SampleRunReport();
+            if (args.Length > 0) {
+                SampleRunReport(args[0], args[1]);
+            } else {
+                SampleRunReport();
+            }
             return 0;
         }
     }
