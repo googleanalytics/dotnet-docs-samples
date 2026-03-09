@@ -27,16 +27,21 @@ Usage:
  */
 
 // [START analyticsdata_json_credentials_quickstart]
+using System;
+using System.IO;
 using Google.Analytics.Data.V1Beta;
 using Google.Api.Gax;
-using System;
+using Google.Apis.Auth;
+using Google.Apis.Auth.OAuth2;
 
 namespace AnalyticsSamples
 {
     class QuickStartJsonCredentials
     {
-        static void SampleRunReport(string propertyId="YOUR-GA4-PROPERTY-ID",
-            string credentialsJsonPath="YOUR-CREDENTIALS-FILE")
+        static void SampleRunReport(
+            string propertyId = "YOUR-GA4-PROPERTY-ID",
+            string credentialsJsonPath = "YOUR-CREDENTIALS-FILE"
+        )
         {
             /**
              * TODO(developer): Uncomment this variable and replace with your
@@ -54,11 +59,19 @@ namespace AnalyticsSamples
              */
             // credentialsJsonPath = "/path/to/credentials.json";
 
+            GoogleCredential credential;
+            using (var stream = new FileStream(credentialsJsonPath, FileMode.Open, FileAccess.Read))
+            {
+                credential = CredentialFactory
+                    .FromStream<ServiceAccountCredential>(stream)
+                    .ToGoogleCredential();
+            }
+
             // Explicitly use service account credentials by specifying
             // the private key file.
             BetaAnalyticsDataClient client = new BetaAnalyticsDataClientBuilder
             {
-              CredentialsPath = credentialsJsonPath
+                GoogleCredential = credential,
             }.Build();
             // [END analyticsdata_json_credentials_initialize]
 
@@ -67,9 +80,12 @@ namespace AnalyticsSamples
             RunReportRequest request = new RunReportRequest
             {
                 Property = "properties/" + propertyId,
-                Dimensions = { new Dimension{ Name="city"}, },
-                Metrics = { new Metric{ Name="activeUsers"}, },
-                DateRanges = { new DateRange{ StartDate="2020-03-31", EndDate="today"}, },
+                Dimensions = { new Dimension { Name = "city" } },
+                Metrics = { new Metric { Name = "activeUsers" } },
+                DateRanges =
+                {
+                    new DateRange { StartDate = "2020-03-31", EndDate = "today" },
+                },
             };
 
             // Make the request
@@ -80,17 +96,25 @@ namespace AnalyticsSamples
             // For more information on processing paged responses, see:
             // https://cloud.google.com/dotnet/docs/reference/help/page-streaming
             Console.WriteLine("Report result:");
-            foreach(Row row in response.Rows)
+            foreach (Row row in response.Rows)
             {
-                Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
+                Console.WriteLine(
+                    "{0}, {1}",
+                    row.DimensionValues[0].Value,
+                    row.MetricValues[0].Value
+                );
             }
             // [END analyticsdata_json_credentials_run_report_response]
         }
+
         static int Main(string[] args)
         {
-            if (args.Length > 0) {
+            if (args.Length > 0)
+            {
                 SampleRunReport(args[0], args[1]);
-            } else {
+            }
+            else
+            {
                 SampleRunReport();
             }
             return 0;

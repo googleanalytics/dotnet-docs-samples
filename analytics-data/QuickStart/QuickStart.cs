@@ -27,14 +27,14 @@ Usage:
  */
 
 // [START analyticsdata_quickstart]
-using Google.Analytics.Data.V1Beta;
 using System;
+using Google.Analytics.Data.V1Beta;
 
 namespace AnalyticsSamples
 {
     class QuickStart
     {
-        static void SampleRunReport(string propertyId="YOUR-GA4-PROPERTY-ID")
+        static void SampleRunReport(string propertyId = "YOUR-GA4-PROPERTY-ID")
         {
             /**
              * TODO(developer): Uncomment this variable and replace with your
@@ -53,9 +53,12 @@ namespace AnalyticsSamples
             RunReportRequest request = new RunReportRequest
             {
                 Property = "properties/" + propertyId,
-                Dimensions = { new Dimension{ Name="city"}, },
-                Metrics = { new Metric{ Name="activeUsers"}, },
-                DateRanges = { new DateRange{ StartDate="2020-03-31", EndDate="today"}, },
+                Dimensions = { new Dimension { Name = "city" } },
+                Metrics = { new Metric { Name = "activeUsers" } },
+                DateRanges =
+                {
+                    new DateRange { StartDate = "2020-03-31", EndDate = "today" },
+                },
             };
 
             // Make the request
@@ -64,17 +67,25 @@ namespace AnalyticsSamples
 
             // [START analyticsdata_run_report_response]
             Console.WriteLine("Report result:");
-            foreach(Row row in response.Rows)
+            foreach (Row row in response.Rows)
             {
-                Console.WriteLine("{0}, {1}", row.DimensionValues[0].Value, row.MetricValues[0].Value);
+                Console.WriteLine(
+                    "{0}, {1}",
+                    row.DimensionValues[0].Value,
+                    row.MetricValues[0].Value
+                );
             }
             // [END analyticsdata_run_report_response]
         }
+
         static int Main(string[] args)
         {
-            if (args.Length > 0) {
+            if (args.Length > 0)
+            {
                 SampleRunReport(args[0]);
-            } else {
+            }
+            else
+            {
                 SampleRunReport();
             }
             return 0;
