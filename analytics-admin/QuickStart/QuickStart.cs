@@ -49,9 +49,9 @@ https://cloud.google.com/docs/authentication/production#passing_the_path_to_the_
 
 // [START analyticsadmin_quickstart]
 
+using System;
 using Google.Analytics.Admin.V1Beta;
 using Google.Api.Gax;
-using System;
 
 namespace AnalyticsSamples
 {
@@ -60,9 +60,10 @@ namespace AnalyticsSamples
         static void Main(string[] args)
         {
             AnalyticsAdminServiceClient client = AnalyticsAdminServiceClient.Create();
-            PagedEnumerable<ListAccountsResponse, Account> response =
-                client.ListAccounts( new ListAccountsRequest() );
-            foreach( Account account in response )
+            PagedEnumerable<ListAccountsResponse, Account> response = client.ListAccounts(
+                new ListAccountsRequest()
+            );
+            foreach (Account account in response)
             {
                 Console.WriteLine("Account name: {0}", account.Name);
                 Console.WriteLine("Display name: {0}", account.DisplayName);
