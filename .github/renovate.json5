@@ -23,4 +23,16 @@
         ],
         "minimumReleaseAge": null
     },
+    "packageRules": [
+        {
+            // Group Google Analytics packages together since they are part of
+            // the same release process.
+            "description": "Group Google Analytics API updates",
+            "matchPackageNames": [
+                "Google.Analytics.Data.V1Beta",
+                "Google.Analytics.Admin.V1Beta"
+            ],
+            "groupName": "Google Analytics APIs"
+        }
+    ]
 }
